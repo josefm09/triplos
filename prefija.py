@@ -4,7 +4,7 @@ import re
 #example (6+4)*8(7+4)
 print('Declare una expresion')
 #ex = str(input()) #se almacena la expresion
-ex = '(6+4)*8(7+4)'
+ex = '(a*b)/(c*d)'
 valid = False #se inicializa una variable en falso, luego se utilizara
 pila = [] #se inicializa la pila 
 resultado = [] #se inicializa el arreglo de resultados
@@ -33,9 +33,47 @@ prefija(ex)# se ejecuta la funcion
 for n in reversed(resultado): #se recorre el resultado invertido 
     orderRes += n#para añadir los valores a un string
 
-triplo(orderRes)# se ejecuta la función para imprimir los triplos
-
 def triplo(value): #se declara la función que regresa las variables intermedias
+    print(value)
+    operador = []
+    intermedia = []
+    con = 0
+    c = 1
+    ci = 0
+    nuevo = ''
+    for i in value:
+        if re.match('[a-zA-Z0-9]',i):
+            pila.append(i)
+        if i in '+-*/)':
+            operador.append(i)
+    
+    for n in reversed(pila):    
+        nuevo += n
+
+    print(pila)
+    print(operador)
+    print(nuevo)
+    for j in nuevo:
+        if con < len(nuevo):
+            aux1 = nuevo[con]
+            aux2 = nuevo[con + 1]
+  
+            
+        else:
+            aux1 = intermedia[ci]
+            aux2 = intermedia[ci + 1]
+            ci += 1
+            
+        cadena = '%s%s%s%s%s%s' % ('T',c,' = ',aux1,operador[c-1],aux2)
+        print(cadena) 
+        intermedia.append(cadena[:2])
+        con += 2
+        c += 1
+        
+        
+
+
+triplo(resultado)# se ejecuta la función para imprimir los triplos
 
 print('Notacion infija ', ex)#se imprime la expresion original
 print('Notacion prefija ',orderRes)#se imprime la expresion en prefija
