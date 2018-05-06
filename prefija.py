@@ -4,7 +4,7 @@ import re
 #example (6+4)*8(7+4)
 print('Declare una expresion')
 #ex = str(input()) #se almacena la expresion
-ex = '(a*b)/(c*d)'
+ex = '(6+4)*(7+4)'
 valid = False #se inicializa una variable en falso, luego se utilizara
 pila = [] #se inicializa la pila 
 resultado = [] #se inicializa el arreglo de resultados
@@ -34,44 +34,41 @@ for n in reversed(resultado): #se recorre el resultado invertido
     orderRes += n#para añadir los valores a un string
 
 def triplo(value): #se declara la función que regresa las variables intermedias
-    print(value)
-    operador = []
-    intermedia = []
-    con = 0
-    c = 1
-    ci = 0
-    nuevo = ''
-    for i in value:
-        if re.match('[a-zA-Z0-9]',i):
-            pila.append(i)
-        if i in '+-*/)':
-            operador.append(i)
+    operador = [] #Arreglo para almacenar los operadores
+    intermedia = [] #Arreglo para almacenar los nombres de las variables intermedias
+    con = 0 #contador  para manejar la interación de el contenido de la pila que contiene los alfanumericos al revez
+    c = 1 #contador para controlar el orden en que se leen los operadores
+    ci = 0 #contador para controlar el orden de las variables intermedias
+    nuevo = '' #se inicializan la variable en la que se concatenan el resultado de voltear la pila alfanumerica
+    for i in value: #ciclo que recibe el parametro del metodo que contiene la pila resultado completa
+        if re.match('[a-zA-Z0-9]',i): #se valida que contenga caracteres alfanumericos para separar los operadores de los operandos
+            pila.append(i) #se agregan en el arreglo pila los caracteres que son operandos
+        if i in '+-*/)': #Se valida que sea un operador el siguiente elemento
+            operador.append(i) #Se agregan los operadores al arreglo operador
     
-    for n in reversed(pila):    
-        nuevo += n
-
-    print(pila)
-    print(operador)
-    print(nuevo)
-    for j in nuevo:
-        if con < len(nuevo):
-            aux1 = nuevo[con]
-            aux2 = nuevo[con + 1]
-  
-            
-        else:
-            aux1 = intermedia[ci]
-            aux2 = intermedia[ci + 1]
-            ci += 1
-            
-        cadena = '%s%s%s%s%s%s' % ('T',c,' = ',aux1,operador[c-1],aux2)
-        print(cadena) 
-        intermedia.append(cadena[:2])
-        con += 2
-        c += 1
+    for n in reversed(pila): #se invierte y recorre la pila de los operandos    
+        nuevo += n#se almacena en una nueva variable de tipo string el resultado
         
-        
+    try: 
+        for j in nuevo: #se recorre la nueva variable 
+            if con < len(nuevo): #comparamos que el contador sea menor a la longitud de la varible
+                aux1 = nuevo[con] #almacenamos el caracter introducido 
+                aux2 = nuevo[con + 1] #almacenamos el otro operando
 
+            else: #si superamos la longitud de la variable entonces tenemos variables intermedias
+                aux1 = intermedia[ci] #almacenamos la variable intermedia con la posicion de su propio contador
+                ci += 1 #aumentamos el contador
+                aux2 = intermedia[ci] #para seguir con lasiguiente variable intermedia
+            
+            cadena = '%s%s%s%s%s%s' % ('T',c,' = ',aux1,operador[c-1],aux2) #creaamos una cadena preparada segun los resultados de la validacion
+            print(cadena) #imprimimos la cadena preparada para visualizar el codigo intermedio
+            intermedia.append(cadena[:2]) #agregamos a la pila de variables intermedias el nombre de la siguiente variable
+            con += 2 #aumentamos los contadores de manera independiente
+            c += 1
+    except IndexError:
+        print("") #capturamos las excepciones
+        source = ""    
+    
 
 triplo(resultado)# se ejecuta la función para imprimir los triplos
 
